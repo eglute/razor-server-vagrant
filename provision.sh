@@ -73,7 +73,7 @@ service dnsmasq status
 # sed -i "s/exit 0/iptables-restore < \/etc\/\iptables.sav \nexit 0/g" /etc/rc.local
 # sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g" /etc/sysctl.conf
 
-apt-get install postgresql libarchive-dev curl git openjdk-7-jre-headless -y
+apt-get install postgresql libarchive-dev openjdk-7-jre-headless -y
 
 
 sudo -i -u postgres psql -c "CREATE ROLE razor LOGIN PASSWORD 'razor';"
