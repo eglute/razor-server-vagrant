@@ -142,7 +142,6 @@ tar xf razor-microkernel-003.tar -C /var/lib/razor/repo-store/
 cd /opt
 
 gem install razor-client
-# git clone https://github.com/puppetlabs/razor-client
 
 source /root/.profile
 razor --url http://$IP_ADDRESS:8080/api nodes
