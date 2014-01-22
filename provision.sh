@@ -156,7 +156,7 @@ cat > policy.json<<EOF
 {
   "name": "ubuntu_one",
   "repo": { "name": "ubuntu_server" },
-  "recipe": { "name": "ubuntu" },
+  "task": { "name": "ubuntu" },
   "broker": { "name": "noop" },
   "enabled": true,
   "hostname": "host${id}",
