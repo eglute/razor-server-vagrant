@@ -99,7 +99,7 @@ EOF
 
 source /root/.profile
  cd /opt
- git clone https://github.com/puppetlabs/razor-server.git
+ git clone https://github.com/puppetlabs/razor-server.git --branch tags/release-0.13.0
 
 cd /opt/razor-server
 
