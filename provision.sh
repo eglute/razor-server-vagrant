@@ -62,19 +62,16 @@ sleep 10
 echo service dnsmasq status
 service dnsmasq status
 
-# apt-get install iptables -y
+iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
+iptables --append FORWARD --in-interface eth1 -j ACCEPT
+iptables-save | sudo tee /etc/iptables.conf
+iptables-restore < /etc/iptables.conf
+sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
 
-# iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-# iptables -t nat -F POSTROUTING
-# iptables-save | sudo tee /etc/iptables.sav
-# iptables-restore < /etc/iptables.sav
-# sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
-
-# sed -i "s/exit 0/iptables-restore < \/etc\/\iptables.sav \nexit 0/g" /etc/rc.local
-# sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g" /etc/sysctl.conf
+sed -i "s/exit 0/iptables-restore < \/etc\/\iptables.conf \nexit 0/g" /etc/rc.local
+sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g" /etc/sysctl.conf
 
 apt-get install postgresql libarchive-dev openjdk-7-jre-headless -y
-
 
 sudo -i -u postgres psql -c "CREATE ROLE razor LOGIN PASSWORD 'razor';"
 sudo -i -u postgres createdb -O razor razor_dev;
@@ -85,7 +82,6 @@ service postgresql restart
 mkdir -p /var/lib/razor/repo-store
 
 cd   
-
 curl https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash 
    
 cat >>/root/.profile <<EOF
@@ -98,19 +94,18 @@ fi
 EOF
 
 source /root/.profile
- cd /opt
- git clone https://github.com/puppetlabs/razor-server.git --branch tags/release-0.13.0
+cd /opt
+#git clone https://github.com/puppetlabs/razor-server.git 
+wget https://github.com/puppetlabs/razor-server/archive/0.14.1.tar.gz
+tar -zxvf 0.14.1.tar.gz
+cd razor-server-0.14.1/
 
-cd /opt/razor-server
-
- rbenv bootstrap-ubuntu-12-04
- git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
- rbenv install jruby-1.7.8
- rbenv rehash && rbenv global jruby-1.7.8 
+rbenv bootstrap-ubuntu-12-04
+git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+rbenv install jruby-1.7.8
+rbenv rehash && rbenv global jruby-1.7.8 
  
- source /root/.profile
- 
- gem install bundler
+gem install bundler
  
 bundle install
 cp config.yaml.sample config.yaml
@@ -136,19 +131,19 @@ curl -L -O http://$IP_ADDRESS:8080/api/microkernel/bootstrap?nic_max=3
 
 mv bootstrap* /var/lib/tftpboot/bootstrap.ipxe
 
-curl -L -O http://links.puppetlabs.com/razor-microkernel-003.tar 
-tar xf razor-microkernel-003.tar -C /var/lib/razor/repo-store/
+curl -L -O http://links.puppetlabs.com/razor-microkernel-latest.tar
+tar xf razor-microkernel-latest.tar -C /var/lib/razor/repo-store/
 
 cd /opt
 
+rbenv install 2.1.1
+rbenv global 2.1.1
 gem install razor-client
 
-source /root/.profile
 razor --url http://$IP_ADDRESS:8080/api nodes
 
 cd
 wget http://releases.ubuntu.com/precise/ubuntu-12.04.4-server-amd64.iso
-source /root/.profile
 razor create-repo --name=ubuntu_server --iso-url file:///root/ubuntu-12.04.4-server-amd64.iso 
 razor create-broker --name=noop --broker-type=noop
 
