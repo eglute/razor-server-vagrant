@@ -96,9 +96,9 @@ EOF
 source /root/.profile
 cd /opt
 #git clone https://github.com/puppetlabs/razor-server.git 
-wget https://github.com/puppetlabs/razor-server/archive/0.14.1.tar.gz
-tar -zxvf 0.14.1.tar.gz
-cd razor-server-0.14.1/
+wget https://github.com/puppetlabs/razor-server/archive/0.15.0.tar.gz
+tar -zxvf 0.15.0.tar.gz
+cd razor-server-0.15.0/
 
 rbenv bootstrap-ubuntu-12-04
 git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
