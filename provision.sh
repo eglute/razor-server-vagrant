@@ -140,7 +140,7 @@ cd
 wget http://releases.ubuntu.com/precise/ubuntu-12.04.4-server-amd64.iso
 razor create-repo --name=ubuntu_server --iso-url file:///root/ubuntu-12.04.4-server-amd64.iso --task ubuntu
 razor create-broker --name=noop --broker-type=noop
-
+razor create-tag --name small --rule '["=", ["num", ["fact", "processorcount"]], 1]'
 cat > policy.json<<EOF
 {
   "name": "ubuntu_one",
@@ -151,8 +151,7 @@ cat > policy.json<<EOF
   "hostname": "host${id}",
   "root_password": "secret",
   "max_count": "20",
-  "rule_number": "107",
-  "tags": [{ "name": "ubuntu_small", "rule": ["=", ["num", ["fact", "processorcount"]], 1]}]
+  "tags": ["small"]
 }
 EOF
 
