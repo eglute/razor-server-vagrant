@@ -4,6 +4,7 @@ sudo su -
 apt-get update -y
 apt-get install curl -y
 apt-get install git -y
+apt-get install build-essential -y
 
 IP_ADDRESS=$1
 IP_RANGE=$2
@@ -82,25 +83,18 @@ service postgresql restart
 mkdir -p /var/lib/razor/repo-store
 
 cd   
-curl https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash 
-   
-cat >>/root/.profile <<EOF
-# rbenv
-export RBENV_ROOT="\${HOME}/.rbenv"
-if [ -d "\${RBENV_ROOT}" ]; then
-  export PATH="\${RBENV_ROOT}/bin:\${PATH}"
-  eval "\$(rbenv init -)"
-fi
-EOF
 
-source /root/.profile
+git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+
+source /root/.bashrc
 cd /opt
 #git clone https://github.com/puppetlabs/razor-server.git 
 wget https://github.com/puppetlabs/razor-server/archive/0.15.0.tar.gz
 tar -zxvf 0.15.0.tar.gz
 cd razor-server-0.15.0/
 
-rbenv bootstrap-ubuntu-12-04
 git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
 rbenv install jruby-1.7.8
 rbenv rehash && rbenv global jruby-1.7.8 
@@ -144,7 +138,7 @@ razor --url http://$IP_ADDRESS:8080/api nodes
 
 cd
 wget http://releases.ubuntu.com/precise/ubuntu-12.04.4-server-amd64.iso
-razor create-repo --name=ubuntu_server --iso-url file:///root/ubuntu-12.04.4-server-amd64.iso 
+razor create-repo --name=ubuntu_server --iso-url file:///root/ubuntu-12.04.4-server-amd64.iso --task ubuntu
 razor create-broker --name=noop --broker-type=noop
 
 cat > policy.json<<EOF
