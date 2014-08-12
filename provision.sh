@@ -85,15 +85,19 @@ mkdir -p /var/lib/razor/repo-store
 cd   
 
 git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.profile
+echo 'eval "$(rbenv init -)"' >> ~/.profile
 
-source /root/.bashrc
+source /root/.profile
+git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+
 cd /opt
 #git clone https://github.com/puppetlabs/razor-server.git 
 wget https://github.com/puppetlabs/razor-server/archive/0.15.0.tar.gz
 tar -zxvf 0.15.0.tar.gz
 cd razor-server-0.15.0/
+
+git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
 
 rbenv install jruby-1.7.8
 rbenv global jruby-1.7.8 
