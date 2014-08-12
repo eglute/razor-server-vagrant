@@ -153,7 +153,7 @@ cat > policy.json<<EOF
   "enabled": true,
   "hostname": "host${id}",
   "root_password": "secret",
-  "max_count": "20",
+  "max_count": 20,
   "tags": ["small"]
 }
 EOF
