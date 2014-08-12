@@ -95,9 +95,8 @@ wget https://github.com/puppetlabs/razor-server/archive/0.15.0.tar.gz
 tar -zxvf 0.15.0.tar.gz
 cd razor-server-0.15.0/
 
-git clone https://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
 rbenv install jruby-1.7.8
-rbenv rehash && rbenv global jruby-1.7.8 
+rbenv global jruby-1.7.8 
  
 gem install bundler
  
