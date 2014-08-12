@@ -63,6 +63,8 @@ sleep 10
 echo service dnsmasq status
 service dnsmasq status
 
+apt-get install postgresql libarchive-dev openjdk-7-jre-headless iptables -y
+
 iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
 iptables --append FORWARD --in-interface eth1 -j ACCEPT
 iptables-save | sudo tee /etc/iptables.conf
@@ -71,8 +73,6 @@ sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
 
 sed -i "s/exit 0/iptables-restore < \/etc\/\iptables.conf \nexit 0/g" /etc/rc.local
 sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g" /etc/sysctl.conf
-
-apt-get install postgresql libarchive-dev openjdk-7-jre-headless -y
 
 sudo -i -u postgres psql -c "CREATE ROLE razor LOGIN PASSWORD 'razor';"
 sudo -i -u postgres createdb -O razor razor_dev;
