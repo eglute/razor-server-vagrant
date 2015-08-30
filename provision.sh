@@ -140,8 +140,8 @@ gem install razor-client
 razor --url http://$IP_ADDRESS:8080/api nodes
 
 cd
-wget http://releases.ubuntu.com/precise/ubuntu-12.04.4-server-amd64.iso
-razor create-repo --name=ubuntu_server --iso-url file:///root/ubuntu-12.04.4-server-amd64.iso --task ubuntu
+wget http://releases.ubuntu.com/precise/ubuntu-12.04.5-server-amd64.iso
+razor create-repo --name=ubuntu_server --iso-url file:///root/ubuntu-12.04.5-server-amd64.iso --task ubuntu
 razor create-broker --name=noop --broker-type=noop
 razor create-tag --name small --rule '["=", ["num", ["fact", "processorcount"]], 1]'
 cat > policy.json<<EOF
